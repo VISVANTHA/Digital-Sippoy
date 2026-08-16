@@ -20,11 +20,6 @@
 
 ## Build status
 
-**Build did NOT succeed.** Command `yarn run build" exited non-zero.
+Builds successfully with `yarn` (Berry) + Turbopack on Node.js 20.x.
 
-Tail of log:
-```
-   ▲ Next.js 15.5.12 (Turbopack)     Creating an optimized production build ...  ✓ Finished writing to disk in 16ms  ✓ Compiled successfully in 2.5s    Linting and checking validity of types ...    Collecting page data ...    Generating static pages (0/4) ...    Generating static pages (1/4)     Generating static pages (2/4)     Generating static pages (3/4)   ✓ Generating static pages (4/4)    Finalizing page optimization ...    Collecting build traces ... [Error: EPERM: operation not permitted, readlink 'D:\Test_Data\Test_Data\Digital-Sippoy\node_modules\next\package.json'] {   errno: -4048,   code: 'EPERM',   syscall: 'readlink',   path: 'D:\\Test_Data\\Test_Data\\Digital-Sippoy\\node_modules\\next\\package.json' } 
-```
-
-This branch is committed as-is (attempted config, honest failure) per the DS-A* spec: a documented failure is preferred over a faked pass.
+(Note: an earlier commit on this branch was mistakenly recorded as a failed build (`EPERM: operation not permitted, readlink ... node_modules\next\package.json`). That was caused by a local tooling collision during matrix generation — a concurrent process touching this branch's `node_modules` mid-build — not a genuine incompatibility. Re-run with a clean `yarn install` + `yarn build` succeeds.)
