@@ -54,4 +54,4 @@ See [COMPLIANCE.md](COMPLIANCE.md) for the full security/compliance mapping.
 
 ## Build status
 
-Builds successfully with `npm` + Turbopack on Node.js 20.x.
+Builds successfully with `npm` + Webpack on Node.js 20.x.
