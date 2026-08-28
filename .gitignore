@@ -30,3 +30,13 @@ bun-debug.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Lint / quality tool reports (CI artifacts, never committed)
+lint-report.json
+jscpd-report/
+coverage/
+.nyc_output/
+nyc-mocha/
+mutation-report.json
+reports/mutation/
+.stryker-tmp/
