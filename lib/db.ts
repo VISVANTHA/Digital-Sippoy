@@ -1,48 +1,37 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-
 export type Item = {
   id: string;
   name: string;
   createdAt: string;
 };
 
-const DATA_FILE = path.join(process.cwd(), "data", "items.json");
-
-async function readAll(): Promise<Item[]> {
-  try {
-    const raw = await fs.readFile(DATA_FILE, "utf-8");
-    return JSON.parse(raw) as Item[];
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-      return [];
-    }
-    throw err;
-  }
-}
-
-async function writeAll(items: Item[]): Promise<void> {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(items, null, 2), "utf-8");
+/**
+ * items-service now owns the actual JSON-file store (see
+ * ../items-service/src/db.ts). This is a thin HTTP client, not a
+ * function-level const, so tests can point it at a fake server per-test
+ * without needing a module reload.
+ */
+function itemsServiceUrl(): string {
+  return process.env.ITEMS_SERVICE_URL ?? "http://localhost:4000";
 }
 
 export async function getItems(): Promise<Item[]> {
-  const items = await readAll();
-  return items.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  const res = await fetch(`${itemsServiceUrl()}/items`);
+  if (!res.ok) {
+    throw new Error(`items-service returned ${res.status} for GET /items`);
+  }
+  const data = (await res.json()) as { items: Item[] };
+  return data.items;
 }
 
 export async function addItem(name: string): Promise<Item> {
-  const trimmed = name.trim();
-  if (!trimmed) {
-    throw new Error("Item name must not be empty");
+  const res = await fetch(`${itemsServiceUrl()}/items`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name }),
+  });
+  const data = (await res.json().catch(() => ({}))) as { item?: Item; error?: string };
+  if (!res.ok || !data.item) {
+    throw new Error(data.error ?? `items-service returned ${res.status} for POST /items`);
   }
-  const items = await readAll();
-  const item: Item = {
-    id: crypto.randomUUID(),
-    name: trimmed,
-    createdAt: new Date().toISOString(),
-  };
-  items.push(item);
-  await writeAll(items);
-  return item;
+  return data.item;
 }

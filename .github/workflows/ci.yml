@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [DS-041]
+  pull_request:
+    branches: [DS-041]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run lint:report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lint-report
+          path: lint-report.json
+          retention-days: 14
+
+  duplication:
+    name: Duplication (jscpd)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run dup
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jscpd-report
+          path: jscpd-report/
+          retention-days: 14
+
+  test:
+    name: Test + coverage gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:coverage:gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nyc-mocha-coverage
+          path: nyc-mocha/
+          retention-days: 14
+
+  build:
+    name: Build (Turbopack, unchanged)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+
+  audit:
+    name: Dependency audit (report-only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - run: npm ci
+      # Report-only for now: this currently surfaces 3 known high-severity
+      # advisories in next/postcss/sharp that require bumping the pinned
+      # Next.js patch version repo-wide -- a "locked technology baseline"
+      # decision, not something this gate should silently force. Flip to
+      # blocking once that decision is made.
+      - run: npm audit --production --audit-level=high
+        continue-on-error: true
