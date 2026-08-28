@@ -1,8 +1,8 @@
 {
-  "name": "digital-sippoy-ds-010",
+  "name": "digital-sippoy-ds-052",
   "version": "1.0.0",
   "private": true,
-  "description": "Digital-Sippoy DS-010: Next.js 15.5.12 / React 19.1.0 Pages Router, Turbopack, yarn. Full-stack architecture note.",
+  "description": "Digital-Sippoy DS-052: Next.js 15.5.12 / React 19.1.0 Pages Router, Turbopack, yarn. Monolith architecture note.",
   "engines": {
     "node": "20.x"
   },
