@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { assertItemName } from "./validate";
 
 export type Item = {
   id: string;
@@ -32,10 +33,7 @@ export async function getItems(): Promise<Item[]> {
 }
 
 export async function addItem(name: string): Promise<Item> {
-  const trimmed = name.trim();
-  if (!trimmed) {
-    throw new Error("Item name must not be empty");
-  }
+  const trimmed = assertItemName(name);
   const items = await readAll();
   const item: Item = {
     id: crypto.randomUUID(),
