@@ -20,6 +20,7 @@ const config = [
   {
     plugins: {
       security: (await import("eslint-plugin-security")).default,
+      sonarjs: (await import("eslint-plugin-sonarjs")).default,
     },
     rules: {
       // Rule Detection Test / Rule Severity Classification
@@ -29,6 +30,7 @@ const config = [
       // for duplication.)
       "@typescript-eslint/no-unused-vars": "warn",
       complexity: ["warn", 8],
+      "sonarjs/cognitive-complexity": ["warn", 15],
       "max-depth": ["warn", 3],
       "max-lines-per-function": ["warn", 60],
 
@@ -77,6 +79,17 @@ const config = [
     files: ["test/**/*.{ts,tsx}"],
     rules: {
       "max-lines-per-function": "off",
+    },
+  },
+  {
+    // scripts/**: standalone CLI reporting tools (coverage delta, code
+    // churn), not application logic -- console output is their purpose,
+    // and their file paths are fixed constants, not user input.
+    files: ["scripts/**/*.mjs"],
+    rules: {
+      "no-console": "off",
+      complexity: ["warn", 12],
+      "max-len": ["warn", { code: 110 }],
     },
   },
 ];
