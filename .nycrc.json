@@ -1,0 +1,15 @@
+{
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "reporter": ["text", "json-summary", "html"],
+  "report-dir": "nyc-mocha",
+  "include": ["lib/**/*.ts", "pages/api/**/*.ts"],
+  "exclude": [
+    "lib/lint-fixtures.ts",
+    "lib/use-async-submit.ts",
+    "test/**/*.ts",
+    "**/*.d.ts",
+    "pages/api/auth/**"
+  ],
+  "all": true,
+  "check-coverage": false
+}
