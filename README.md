@@ -50,7 +50,17 @@ See [COMPLIANCE.md](COMPLIANCE.md) for the full security/compliance mapping.
   `nyc-mocha/coverage-summary.json`) / `npm run test:coverage:gate` (CI threshold gate)
 - **Mutation testing** — `npm run mutation` (StrykerJS, nightly in CI — see
   `.github/workflows/mutation.yml`)
+- **Cyclomatic / Cognitive Complexity** — ESLint's built-in `complexity` rule and
+  `eslint-plugin-sonarjs`'s `sonarjs/cognitive-complexity` (both `npm run lint`, warn-only,
+  thresholds 8 and 15). `lib/lint-fixtures.ts`'s `highComplexityExample` trips both.
 - **CI** — `.github/workflows/ci.yml`, `codeql.yml`, `semgrep.yml`; `.github/dependabot.yml`
+- **Coverage delta** — `npm run coverage:delta` (`scripts/coverage-delta.mjs`): compares the
+  current coverage run against the committed `coverage-baseline.json`, informational only.
+- **Code churn** — `npm run churn` (`scripts/code-churn.mjs`): aggregates real
+  `git log --numstat` per tracked file into `churn-report.json`, for risk-based test prioritization.
+- **Not tooled (accepted gaps)** — true Path Coverage (distinct from branch coverage) and
+  Data Flow "All-Defs/All-Uses" coverage have no maintained TypeScript tool; see
+  [COMPLIANCE.md](COMPLIANCE.md#test-classification-taxonomy-coverage) for why.
 
 ## Build status
 
