@@ -79,7 +79,7 @@ See [COMPLIANCE.md](COMPLIANCE.md) for the full security/compliance mapping.
 
 ## Build status
 
-Builds successfully with `npm` + Turbopack on Node.js 20.x. Docker/`docker-compose.yml` follow
+Builds successfully with `bun` + Webpack on Node.js 20.x. Docker/`docker-compose.yml` follow
 standard patterns but weren't verified with an actual `docker compose up` in the session that added
 them (Docker daemon unavailable); the `npm run build`/`npm run start` commands they invoke were
 verified directly, and the full two-service flow was verified as two plain `node` processes.
