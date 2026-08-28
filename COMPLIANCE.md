@@ -49,6 +49,42 @@ bug on purpose:
   `issue?.code` in `lib/validate.ts`) that zod's own contract makes
   unreachable in practice.
 
+## Test-classification taxonomy coverage
+
+Against the team's White-Box testing taxonomy (Structural Analysis, Code
+Duplication, Lint, Security SAST/SCA, Control Flow, Mutation, Coverage
+Delta, Data Flow, Code Churn), this branch now covers:
+
+| L2 Testing Type | Tool | Status |
+|---|---|---|
+| Cyclomatic Complexity | ESLint `complexity` rule (`eslint.config.mjs`) | Met — `lib/lint-fixtures.ts`'s `highComplexityExample` trips it (warn, non-blocking) |
+| Cognitive Complexity | `eslint-plugin-sonarjs`'s `sonarjs/cognitive-complexity` | Met — same fixture function, real finding |
+| Code Duplication | jscpd | Met |
+| Lint / Rule Violations | ESLint 9 flat config + `eslint-plugin-security` | Met |
+| Static Vulnerabilities (SAST) | CodeQL, Semgrep | Met |
+| Dependency Risk (SCA) | Dependabot, `npm audit` in CI | Met |
+| Statement / Branch Coverage | nyc (`test:coverage:gate`) | Met |
+| Mutation Score | StrykerJS | Met |
+| Coverage Delta | `scripts/coverage-delta.mjs` (`npm run coverage:delta`) | Met — compares the current `nyc-mocha/coverage-summary.json` against a committed `coverage-baseline.json`, informational only |
+| Code Churn | `scripts/code-churn.mjs` (`npm run churn`) | Met — aggregates real `git log --numstat` per tracked file into `churn-report.json` |
+
+Two categories from the taxonomy are **accepted gaps**, not silently
+skipped:
+
+- **Path Coverage** (as a metric distinct from branch coverage) — no
+  mainstream Istanbul/nyc-based tool computes true path coverage for
+  TypeScript; branch coverage (already gated at ≥85%) is the closest
+  practical proxy this stack supports. Treating nyc's branch % as "path
+  coverage" would be a mislabeled number, not a real metric, so it isn't
+  reported under that name.
+- **Data Flow Testing — All-Defs / All-Uses coverage** — this is a
+  1980s academic C-testing technique (Rapps–Weyuker); no maintained
+  TypeScript/JavaScript tool computes def-use path coverage today. The
+  data-flow-adjacent findings that *are* real and already tracked (dead
+  code / unreachable branches via ESLint, `no-unused-vars`, and
+  TypeScript's own unreachable-code checks) are the practical substitute
+  in this ecosystem.
+
 ## How this file is used
 
 - CI (`.github/workflows/ci.yml`, `codeql.yml`, `semgrep.yml`) supplies
