@@ -1,6 +1,6 @@
-# Digital-Sippoy — DS-043
+# Digital-Sippoy — DS-063
 
-**Architecture note:** Full-stack (single Next.js app serving both the API route and the UI).
+**Architecture note:** Monolith (single deployable unit with no internal service or module boundaries; a distinct label from the Full-stack, Microservices, and Event-driven notes used elsewhere in this matrix, though the underlying code is identical).
 
 | | |
 |---|---|

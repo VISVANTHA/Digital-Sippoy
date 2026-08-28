@@ -1,8 +1,8 @@
 {
-  "name": "digital-sippoy-ds-043",
+  "name": "digital-sippoy-ds-063",
   "version": "1.0.0",
   "private": true,
-  "description": "Digital-Sippoy DS-043: Next.js 15.5.12 / React 19.1.0 App Router, Webpack, bun. Full-stack architecture note.",
+  "description": "Digital-Sippoy DS-063: Next.js 15.5.12 / React 19.1.0 App Router, Webpack, bun. Monolith architecture note.",
   "engines": {
     "node": "20.x"
   },
