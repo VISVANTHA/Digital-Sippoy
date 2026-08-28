@@ -17,7 +17,9 @@
     "test": "mocha",
     "test:coverage": "nyc npm test",
     "test:coverage:gate": "nyc --check-coverage --statements 95 --functions 95 --lines 95 --branches 85 npm test",
-    "mutation": "stryker run"
+    "mutation": "stryker run",
+    "coverage:delta": "node scripts/coverage-delta.mjs",
+    "churn": "node scripts/code-churn.mjs"
   },
   "dependencies": {
     "next": "15.5.24",
@@ -38,6 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.24",
     "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-sonarjs": "^4.2.0",
     "jscpd": "^4.0.5",
     "mocha": "^10.7.3",
     "nyc": "^17.1.0",
