@@ -41,3 +41,12 @@ mutation-report.json
 reports/mutation/
 .stryker-tmp/
 churn-report.json
+# New metric-gap report outputs (Components 1–6)
+mocha-stats.json
+misdirection-stats.json
+duplication-regression-map.json
+test-impact-map.json
+data/audit.log
+read_excels.cjs
+whitebox_parsed_master.json
+whitebox_clean_105_metrics.json
