@@ -50,3 +50,5 @@ data/audit.log
 read_excels.cjs
 whitebox_parsed_master.json
 whitebox_clean_105_metrics.json
+*.xlsx
+
