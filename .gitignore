@@ -51,4 +51,9 @@ read_excels.cjs
 whitebox_parsed_master.json
 whitebox_clean_105_metrics.json
 *.xlsx
+dependency-health-report.json
+license-compliance-report.json
+secret-scan-report.json
+cyclonedx-sbom.json
+
 
